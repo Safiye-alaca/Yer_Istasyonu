@@ -173,6 +173,9 @@ class Ui_Form(object):
 "    background-color: #2E2E2E;\n"
 "    border: none;  /* Kenarlık yok */\n"
 "    border-radius: 10px;\n"
+"    font-size: 12pt; "
+"    min-width: 70px;"
+"    min-height: 30px;"
 "    padding: 10px;\n"
 "    color: white;  /* Yazıları beyaz yapıyoruz */\n"
 "}\n"
@@ -202,13 +205,19 @@ class Ui_Form(object):
         self.groupBox_2_irtifa.setObjectName("groupBox_2_irtifa")
         self.label_2_irtifa = QtWidgets.QLabel(self.groupBox_2_irtifa)
         self.label_2_irtifa.setGeometry(QtCore.QRect(10, 10, 71, 21))
-        self.label_2_irtifa.setStyleSheet("QLabel {\n"
-"    background-color: #2E2E2E;\n"
-"    border: none;  /* Kenarlık yok */\n"
-"    border-radius: 10px;\n"
-"    padding: 10px;\n"
-"    color: white;  /* Yazıları beyaz yapıyoruz */\n"
-"}")
+        self.label_2_irtifa.setStyleSheet("""
+    QLabel {
+        background-color: #2E2E2E;
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+        color: white;
+        font-size: 12pt;   /* eklendi */
+        min-width: 70px;   /* eklendi */
+        min-height: 30px;  /* eklendi */
+    }
+""")
+
         self.label_2_irtifa.setText("")
         self.label_2_irtifa.setObjectName("label_2_irtifa")
         self.groupBox_5 = QtWidgets.QGroupBox(self.groupBox_5_telemetre)
