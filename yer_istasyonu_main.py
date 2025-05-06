@@ -30,13 +30,17 @@ class MainWindow(QMainWindow):
         self.ui.label_3_batarya.setText(f"{self.telemetry.battery_voltage:.2f} V")
         self.ui.label_11_donusAcisi.setText(f"{self.telemetry.yaw:.2f}°")
 
-        
+        #self.ui.label.setText(f"{self.telemetry.airspeed:.2f} m/s")       # Hava hızı
+        self.ui.label_6.setText(f"{self.telemetry.groundspeed:.2f} m/s")  # Yer hızı
+        #self.ui.label_8.setText(f"{self.telemetry.roll:.2f}°")            # Roll
+        self.ui.label_9.setText(f"{self.telemetry.pitch:.2f}°")           # Pitch
+        self.ui.label_10_wpyeMesafe.setText(f"{self.telemetry.satellites_visible} uydu") # Uydu sayısı
+        self.ui.label_12_dikeyHiz.setText(f"{self.telemetry.climb:.2f} m/s")   # Dikey hız
+        self.ui.label_8_yerdenHiz.setText(f"{self.telemetry.groundspeed:.2f} m/s")
+        self.ui.label_12_dikeyHiz.setText(f"{self.telemetry.airspeed:.2f} m/s")
+       
 
-        # Eğer backend'de bu verileri topluyorsan bu kısımları da açabilirsin:
-        # self.ui.label_6.setText(f"{self.telemetry.groundspeed:.2f} m/s")
-        # self.ui.label.setText(f"{self.telemetry.airspeed:.2f} m/s")
-        # self.ui.label_8.setText(f"{self.telemetry.roll:.2f}°")
-        # self.ui.label_9.setText(f"{self.telemetry.pitch:.2f}°")
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
