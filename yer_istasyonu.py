@@ -200,26 +200,23 @@ class Ui_Form(object):
         self.label_12_dikeyHiz.setText("")
         self.label_12_dikeyHiz.setObjectName("label_12_dikeyHiz")
         self.groupBox_2_irtifa = QtWidgets.QGroupBox(self.groupBox_5_telemetre)
-        self.groupBox_2_irtifa.setGeometry(QtCore.QRect(0, 270, 81, 41))
-        self.groupBox_2_irtifa.setStyleSheet("font-size: 6pt;")
-        self.groupBox_2_irtifa.setObjectName("groupBox_2_irtifa")
-        self.label_2_irtifa = QtWidgets.QLabel(self.groupBox_2_irtifa)
-        self.label_2_irtifa.setGeometry(QtCore.QRect(10, 10, 71, 21))
+        self.groupBox_2_irtifa.setGeometry(QtCore.QRect(0, 0, 191, 51))  # bu satır yoksa ekle
+
+        self.label_2_irtifa = QtWidgets.QLabel(self.groupBox_2_irtifa)  # önce tanımla
+        self.label_2_irtifa.setGeometry(QtCore.QRect(10, 10, 150, 40))  # sonra geometry ver
         self.label_2_irtifa.setStyleSheet("""
     QLabel {
         background-color: #2E2E2E;
+        color: white;
+        font-size: 18pt;
+        font-weight: bold;
         border: none;
         border-radius: 10px;
-        padding: 10px;
-        color: white;
-        font-size: 12pt;   /* eklendi */
-        min-width: 70px;   /* eklendi */
-        min-height: 30px;  /* eklendi */
     }
 """)
-
         self.label_2_irtifa.setText("")
         self.label_2_irtifa.setObjectName("label_2_irtifa")
+
         self.groupBox_5 = QtWidgets.QGroupBox(self.groupBox_5_telemetre)
         self.groupBox_5.setGeometry(QtCore.QRect(0, 350, 81, 31))
         self.groupBox_5.setStyleSheet("font-size: 6pt;")
@@ -266,20 +263,25 @@ class Ui_Form(object):
         self.label_7.setText("")
         self.label_7.setObjectName("label_7")
         self.groupBox_3_batarya = QtWidgets.QGroupBox(self.groupBox_5_telemetre)
-        self.groupBox_3_batarya.setGeometry(QtCore.QRect(0, 40, 171, 80))
+        self.groupBox_3_batarya.setGeometry(QtCore.QRect(0, 60, 191, 71))  # yoksa ekle
         self.groupBox_3_batarya.setStyleSheet("font-size: 10pt;")
         self.groupBox_3_batarya.setObjectName("groupBox_3_batarya")
-        self.label_3_batarya = QtWidgets.QLabel(self.groupBox_3_batarya)
-        self.label_3_batarya.setGeometry(QtCore.QRect(10, 20, 151, 41))
-        self.label_3_batarya.setStyleSheet("QLabel {\n"
-"    background-color: #2E2E2E;\n"
-"    border: none;  /* Kenarlık yok */\n"
-"    border-radius: 10px;\n"
-"    padding: 10px;\n"
-"    color: white;  /* Yazıları beyaz yapıyoruz */\n"
-"}")
+
+        self.label_3_batarya = QtWidgets.QLabel(self.groupBox_3_batarya)  # önce oluştur
+        self.label_3_batarya.setGeometry(QtCore.QRect(10, 10, 150, 40))  # sonra konum ver
+        self.label_3_batarya.setStyleSheet("""
+    QLabel {
+        background-color: #2E2E2E;
+        color: white;
+        font-size: 18pt;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+    }
+""")
         self.label_3_batarya.setText("")
         self.label_3_batarya.setObjectName("label_3_batarya")
+
         self.groupBox_4 = QtWidgets.QGroupBox(self.groupBox_5_telemetre)
         self.groupBox_4.setGeometry(QtCore.QRect(0, 100, 191, 71))
         self.groupBox_4.setStyleSheet("font-size: 10pt;")
@@ -392,7 +394,7 @@ class Ui_Form(object):
         self.label_9.setText("")
         self.label_9.setObjectName("label_9")
         self.groupBox_11 = QtWidgets.QGroupBox(self.groupBox_5_telemetre)
-        self.groupBox_11.setGeometry(QtCore.QRect(0, 470, 81, 31))
+        self.label_11_donusAcisi.setGeometry(QtCore.QRect(10, 10, 150, 40))
         self.groupBox_11.setStyleSheet("font-size: 6pt;")
         self.groupBox_11.setObjectName("groupBox_11")
         self.label_10 = QtWidgets.QLabel(self.groupBox_11)
@@ -410,17 +412,21 @@ class Ui_Form(object):
         self.groupBox_12.setGeometry(QtCore.QRect(80, 470, 101, 31))
         self.groupBox_12.setStyleSheet("font-size: 6pt;")
         self.groupBox_12.setObjectName("groupBox_12")
-        self.label_11 = QtWidgets.QLabel(self.groupBox_12)
-        self.label_11.setGeometry(QtCore.QRect(10, 10, 81, 21))
-        self.label_11.setStyleSheet("QLabel {\n"
-"    background-color: #2E2E2E;\n"
-"    border: none;  /* Kenarlık yok */\n"
-"    border-radius: 10px;\n"
-"    padding: 10px;\n"
-"    color: white;  /* Yazıları beyaz yapıyoruz */\n"
-"}")
-        self.label_11.setText("")
-        self.label_11.setObjectName("label_11")
+        self.label_11_donusAcisi = QtWidgets.QLabel(self.groupBox_10_donusAcisi)
+        self.label_11_donusAcisi.setGeometry(QtCore.QRect(10, 10, 150, 40))
+        self.label_11_donusAcisi.setStyleSheet("""
+    QLabel {
+        background-color: #2E2E2E;
+        color: white;
+        font-size: 18pt;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+    }
+""")
+        self.label_11_donusAcisi.setText("")
+        self.label_11_donusAcisi.setObjectName("label_11_donusAcisi")
+
         self.groupBox_13 = QtWidgets.QGroupBox(self.groupBox_5_telemetre)
         self.groupBox_13.setGeometry(QtCore.QRect(0, 510, 91, 31))
         self.groupBox_13.setStyleSheet("font-size: 6pt;")
