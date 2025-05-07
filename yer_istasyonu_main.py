@@ -22,14 +22,17 @@ class MainWindow(QMainWindow):
         self.timer_telemetry.timeout.connect(self.update_labels)
         self.timer_telemetry.start(1000)
 
-        # -------------------------------
-        # Analog görüntü (USB kamera) için hazırlık
-        # -------------------------------
-        self.camera = cv2.VideoCapture(1)
 
+        # Analog görüntü (USB kamera) için hazırlık usb kamerayı aç demek
+        self.camera = cv2.VideoCapture(1)
+        #  her 30 milisaniyede bir çalışarak yeni kamera görüntüsü geldi mi kontrolü yapıyor
         self.timer_camera = QTimer()
+        # Her 30 milisaniyede bir update_frame() fonksiyonunu (her seferinde güncelleme sağlar) çağır. 
         self.timer_camera.timeout.connect(self.update_frame)
+        # 30 milisaniyede bir update_frame() fonksiyonu çalışacak demektir.
         self.timer_camera.start(30)
+
+
 
     def update_labels(self):
         print("Veri güncelleniyor...")
@@ -46,6 +49,7 @@ class MainWindow(QMainWindow):
         # self.ui.label_12_dikeyHiz.setText(f"{self.telemetry.climb:.2f} m/s")
         # self.ui.label_8_yerdenHiz.setText(f"{self.telemetry.groundspeed:.2f} m/s")
 
+        # Kamera görüntüsünü GUI(görsel arayüz)’ye aktaran fonksiyon Kameradan görüntü alıp QLabel'e canlı olarak aktarır
     def update_frame(self):
         ret, frame = self.camera.read()
         if ret:
@@ -56,6 +60,7 @@ class MainWindow(QMainWindow):
             pixmap = QPixmap.fromImage(qt_image)
             self.ui.label_5_analog.setPixmap(pixmap)
 
+    # Uygulama kapanırken kamera kaynağını serbest bırakır
     def closeEvent(self, event):
         self.camera.release()
 
