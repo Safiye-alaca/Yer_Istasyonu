@@ -1,11 +1,13 @@
 import sys
+import cv2
+import numpy as np
+import requests
+from io import BytesIO
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtCore import QTimer
 from yer_istasyonu import Ui_Form
-# from backend import TelemetryReader  # ← Telemetri geçici olarak kaldırıldı
-from PyQt5 import QtWidgets
-import cv2
-from PyQt5.QtGui import QImage, QPixmap
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -13,56 +15,60 @@ class MainWindow(QMainWindow):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-        # Telemetri verilerini başlat
-        # self.telemetry = TelemetryReader()
-        # self.telemetry.start()
+        # Analog (USB) kamera başlat
+        self.camera = cv2.VideoCapture(1)
+        self.timer_camera = QTimer()
+        self.timer_camera.timeout.connect(self.update_frame)
+        self.timer_camera.start(30)  # 30ms'de bir analog görüntü
 
-        # Telemetri verilerini GUI'ye yazdırmak için zamanlayıcı kur
+        # Dijital yayın URL (Cloudflare üzerinden gelen)
+        self.stream_url = "https://offensive-dip-vat-voltage.trycloudflare.com/video_feed"
+        self.stream_response = None
+        self.bytes_buffer = b''
+        self.session = requests.Session()  # Oturum ile yeniden bağlanmayı kolaylaştırır
+        self.timer_digital = QTimer()
+        self.timer_digital.timeout.connect(self.update_digital_frame)
+        self.timer_digital.start(100)  # 100ms'de bir dijital görüntü
+
+        # (İsteğe bağlı) Telemetri simülasyonu
         self.timer_telemetry = QTimer()
         self.timer_telemetry.timeout.connect(self.update_labels)
         self.timer_telemetry.start(1000)
 
-
-        # Analog görüntü (USB kamera) için hazırlık usb kamerayı aç demek
-        self.camera = cv2.VideoCapture(1)
-        #  her 30 milisaniyede bir çalışarak yeni kamera görüntüsü geldi mi kontrolü yapıyor
-        self.timer_camera = QTimer()
-        # Her 30 milisaniyede bir update_frame() fonksiyonunu (her seferinde güncelleme sağlar) çağır. 
-        self.timer_camera.timeout.connect(self.update_frame)
-        # 30 milisaniyede bir update_frame() fonksiyonu çalışacak demektir.
-        self.timer_camera.start(30)
-
-
-
     def update_labels(self):
-        print("Veri güncelleniyor...")
-        # print(f"Altitude: {self.telemetry.altitude}")
-        # print(f"Voltage: {self.telemetry.battery_voltage}")
-        # print(f"Yaw: {self.telemetry.yaw}")
+        print("Veri güncelleniyor...")  # Gerekirse telemetry entegrasyonu yapılabilir
 
-        # self.ui.label_2_irtifa.setText(f"{self.telemetry.altitude:.2f} m")
-        # self.ui.label_3_batarya.setText(f"{self.telemetry.battery_voltage:.2f} V")
-        # self.ui.label_11_donusAcisi.setText(f"{self.telemetry.yaw:.2f}°")
-        # self.ui.label_6.setText(f"{self.telemetry.groundspeed:.2f} m/s")
-        # self.ui.label_9.setText(f"{self.telemetry.pitch:.2f}°")
-        # self.ui.label_10_wpyeMesafe.setText(f"{self.telemetry.satellites_visible} uydu")
-        # self.ui.label_12_dikeyHiz.setText(f"{self.telemetry.climb:.2f} m/s")
-        # self.ui.label_8_yerdenHiz.setText(f"{self.telemetry.groundspeed:.2f} m/s")
-
-        # Kamera görüntüsünü GUI(görsel arayüz)’ye aktaran fonksiyon Kameradan görüntü alıp QLabel'e canlı olarak aktarır
     def update_frame(self):
         ret, frame = self.camera.read()
         if ret:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            h, w, ch = frame.shape
-            bytes_per_line = ch * w
-            qt_image = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
+            qt_image = QImage(
+                frame.data, frame.shape[1], frame.shape[0],
+                frame.shape[1] * 3, QImage.Format_RGB888
+            )
             pixmap = QPixmap.fromImage(qt_image)
             self.ui.label_5_analog.setPixmap(pixmap)
 
-    # Uygulama kapanırken kamera kaynağını serbest bırakır
-    def closeEvent(self, event):
-        self.camera.release()
+    def update_digital_frame(self):
+        if not hasattr(self, 'digital_cap'):
+            self.digital_cap = cv2.VideoCapture(self.stream_url)
+
+        if not self.digital_cap.isOpened():
+            print("Dijital stream bağlantısı başarısız.")
+            return
+
+        ret, frame = self.digital_cap.read()
+        if ret:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            qt_image = QImage(
+                frame.data, frame.shape[1], frame.shape[0],
+                frame.shape[1] * 3, QImage.Format_RGB888
+            )
+            pixmap = QPixmap.fromImage(qt_image)
+            self.ui.label_4_dijital.setPixmap(pixmap)
+        else:
+            print("Dijital görüntü alınamadı.")
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
